@@ -20,26 +20,39 @@ class EmpCalculation
 
             default:
                 System.out.println("Employee is absent");
+                empHrs = 0;
         }
     }
 }
 class DailyWage
 {
     public static final int WAGE_PER_HOUR = 20;
-
+    static int totalWage = 0;
+    int totalDailyWage;
     public void dailyWageCalculation()
     {
-        int totalDailyWage = EmpCalculation.empHrs * WAGE_PER_HOUR;
+        totalDailyWage = EmpCalculation.empHrs * WAGE_PER_HOUR;
         System.out.println("Daily employee wage is "+totalDailyWage);
+    }
+    public void totalWage()
+    {
+        totalWage = totalWage + totalDailyWage;
     }
 }
 public class EmpWageCal
 {
+    public static int WORKING_DAYS = 20;
     public static void main(String[] args)
     {
-        EmpCalculation emp = new EmpCalculation();
-        emp.empCheck();
-        DailyWage wage = new DailyWage();
-        wage.dailyWageCalculation();
+        for (int i = 1;  i<= WORKING_DAYS; i++)
+        {
+            System.out.println("For DAY"+i);
+            EmpCalculation emp = new EmpCalculation();
+            emp.empCheck();
+            DailyWage wage = new DailyWage();
+            wage.dailyWageCalculation();
+            wage.totalWage();
+        }
+        System.out.println("Total Wage of employee in a month = "+DailyWage.totalWage);
     }
 }
