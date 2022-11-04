@@ -11,8 +11,6 @@ class EmpCalculation
         switch(empCheck)
         {
             case IS_FULLTIME:
-
-
                 System.out.println("Employee is present and worked full-time");
                 empHrs = 8;
                 break;
