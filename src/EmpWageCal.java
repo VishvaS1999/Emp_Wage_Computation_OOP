@@ -1,18 +1,14 @@
 import java.util.Random;
 public class EmpWageCal
 {
-    public static final int partTime = 1;
-    public static final int fullTime = 2;
+    public static final  int partTime=1,fullTime=2;
+    public final String company;
+    public final int salaryPerHour;
+    public final int workingDays;
+    public final int maxWorkingHours;
+    public int totalEmpWage;
 
-    private final String company;
-    private final int salaryPerHour;
-    private final int workingDays;
-    private final int maxWorkingHours;
-    private int totalEmpWage;
-
-    public EmpWageCal(String company, int salaryPerHour, int workingDays,
-                          int maxWorkingHours)
-    {
+    public EmpWageCal (String company ,int salaryPerHour, int workingDays, int maxWorkingHours) {
 
         this.company = company;
         this.salaryPerHour = salaryPerHour;
@@ -20,60 +16,95 @@ public class EmpWageCal
         this.maxWorkingHours = maxWorkingHours;
 
     }
-
-    public void empWageComputation()
+    public void setTotalEmpWage(int totalEmpWage)
     {
 
-
-        int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
-
-        while (totalEmpHrs <= maxWorkingHours &&
-                totalWorkingDays < workingDays)
-        {
-            totalWorkingDays++;
-            int checkEmp = (int) Math.floor(Math.random() * 10) % 3;
-            switch (checkEmp)
-            {
-                case fullTime :
-                    System.out.println("Employee is full time present");
-                    empHrs = 8;
-                    break;
-                case partTime :
-                    empHrs = 4;
-                    System.out.println("Employee is part time present");
-                    break;
-                default :
-                    System.out.println("Employee is absent");
-                    empHrs = 0;
-            }
-            totalEmpHrs += empHrs;
-
-            System.out.println("Employee Working Days : " +totalWorkingDays +
-                    "     Employee Working Hours : " +totalEmpHrs);
-        }
-        totalEmpWage = totalEmpHrs * salaryPerHour;
+        this.totalEmpWage = totalEmpWage;
     }
-
-    @Override
     public String toString()
     {
-        return "Total Employee Wage for " +company+ " Company is : " +totalEmpWage;
+        return " Total Emp Wage for " + company + " is " + totalEmpWage ;
     }
-    public static void main(String[] args)
+}
+
+ class EmployeeWageBuildArray
+{
+    public static final  int partTime=1,fullTime=2;
+    private int numberOfCompany=0;
+    private EmpWageCal[] companyEmpWageArray;
+
+
+    public EmployeeWageBuildArray()
+    {
+        companyEmpWageArray = new EmpWageCal[5];
+
+    }
+
+    private void addCompanyEmpWage(String company ,int salaryPerHour, int workingDays, int maxWorkingHours)
+    {
+        companyEmpWageArray[numberOfCompany]= new EmpWageCal(company, salaryPerHour, workingDays, maxWorkingHours);
+
+        numberOfCompany ++;
+
+    }
+    private void computeEmpWage()
+    {
+        for(int i=0;i<numberOfCompany;i++)
+        {
+            companyEmpWageArray[i].setTotalEmpWage(this.computeEmpWage(companyEmpWageArray[i]));
+            System.out.println(companyEmpWageArray[i]);
+
+        }
+    }
+    private int computeEmpWage(EmpWageCal companyEmpWage)
     {
 
-        EmpWageCal TCS = new EmpWageCal("TCS", 20, 1, 10);
-        EmpWageCal Accenture = new EmpWageCal("Accenture", 10, 2, 20);
-        EmpWageCal HCL = new EmpWageCal("HCL", 10, 3, 20);
-        EmpWageCal Magic = new EmpWageCal("Magic edTech", 20, 4, 10);
-        TCS.empWageComputation();
-        System.out.println(TCS);
-        Accenture.empWageComputation();
-        System.out.println(Accenture);
-        HCL.empWageComputation();
-        System.out.println(HCL);
-        Magic.empWageComputation();
-        System.out.println(Magic);
+
+        int empHours=0,totalEmpHours=0,totalWorkingDays=0;
+
+        while(totalWorkingDays < companyEmpWage.workingDays && totalEmpHours <= companyEmpWage.maxWorkingHours)
+        {
+
+            totalWorkingDays ++;
+
+            int empCheck = (int)Math.floor(Math.random() *10 )% 3;
+
+
+            switch(empCheck)
+            {
+
+                case partTime:
+                    System.out.println("Employee is Present Part Time");
+                    empHours=4;
+                    break;
+
+                case fullTime:
+                    System.out.println("Employee is Present Full Time");
+                    empHours=8;
+                    break;
+
+                default:
+                    System.out.println("Employee is Absent");
+                    empHours=0;
+
+            }
+
+            totalEmpHours += empHours;
+            System.out.println("DAY:"+ totalWorkingDays +" Emphrs:" + totalEmpHours);
+
+        }
+
+        return totalEmpHours * companyEmpWage.salaryPerHour;
+    }
+
+    public static void main(String[] args)
+    {
+        System.out.println("Welcome to Salary Calculator on Master branch");
+
+        EmployeeWageBuildArray empWageBuild =new EmployeeWageBuildArray();
+        empWageBuild.addCompanyEmpWage("TCS",5,2,10);
+        empWageBuild.addCompanyEmpWage("Accenture",3,4,20);
+        empWageBuild.computeEmpWage();
 
     }
 }
